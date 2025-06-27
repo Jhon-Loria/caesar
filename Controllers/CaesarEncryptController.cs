@@ -19,18 +19,41 @@ namespace caesar.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await _repo.GetAllAsync());
+        public async Task<IActionResult> Get()
+        {
+            var messages = await _repo.GetAllAsync();
+            var encriptados = messages.Select(m => new {
+                m.Id,
+                EncryptedMessage = m.EncryptedMessage,
+                m.Shift,
+                m.CreatedAt
+            });
+            return Ok(encriptados);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var msg = await _repo.GetByIdAsync(id);
-            return msg == null ? NotFound() : Ok(msg);
+            if (msg == null) return NotFound();
+            var encriptado = new {
+                msg.Id,
+                EncryptedMessage = msg.EncryptedMessage,
+                msg.Shift,
+                msg.CreatedAt
+            };
+            return Ok(encriptado);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CaesarMessage model)
         {
+            // Si el shift no se proporciona o es 0, genera uno aleatorio entre 1 y 25
+            if (model.Shift == 0)
+            {
+                var random = new Random();
+                model.Shift = random.Next(1, 26); // 1 a 25
+            }
             model.EncryptedMessage = _service.Encrypt(model.OriginalMessage ?? "", model.Shift);
             await _repo.AddAsync(model);
             return CreatedAtAction(nameof(Get), new { id = model.Id }, model);

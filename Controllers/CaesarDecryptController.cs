@@ -18,18 +18,19 @@ namespace caesar.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var messages = await _repo.GetAllAsync();
-            var desencriptados = messages.Select(m => new {
-                m.Id,
-                DecryptedMessage = _service.Decrypt(m.EncryptedMessage ?? "", m.Shift),
-                m.EncryptedMessage,
-                m.Shift,
-                m.CreatedAt
-            });
-            return Ok(desencriptados);
+            var msg = await _repo.GetByIdAsync(id);
+            if (msg == null) return NotFound();
+            var desencriptado = new {
+                msg.Id,
+                OriginalMessage = _service.Decrypt(msg.EncryptedMessage ?? "", msg.Shift),
+                msg.EncryptedMessage,
+                msg.Shift,
+                msg.CreatedAt
+            };
+            return Ok(desencriptado);
         }
     }
 }
