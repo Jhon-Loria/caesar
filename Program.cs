@@ -4,6 +4,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,3 +96,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+[Authorize]
+[ApiController]
+[Route("api/[controller]")]
+public class CaesarEncryptController : ControllerBase
+{
+    // ...
+}
