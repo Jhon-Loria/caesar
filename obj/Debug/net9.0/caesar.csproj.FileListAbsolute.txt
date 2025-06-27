@@ -114,3 +114,4 @@ C:\Users\MARCO\Documents\caesar\caesar\bin\Debug\net9.0\Microsoft.IdentityModel.
 C:\Users\MARCO\Documents\caesar\caesar\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\MARCO\Documents\caesar\caesar\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\MARCO\Documents\caesar\caesar\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net9.0\caesar.sourcelink.json
