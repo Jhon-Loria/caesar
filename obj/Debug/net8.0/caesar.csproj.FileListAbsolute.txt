@@ -1,0 +1,8 @@
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.csproj.AssemblyReference.cache
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.AssemblyInfoInputs.cache
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.AssemblyInfo.cs
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.csproj.CoreCompileInputs.cache
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\MARCO\Documents\caesar\caesar\obj\Debug\net8.0\caesar.sourcelink.json
