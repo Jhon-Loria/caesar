@@ -91,16 +91,17 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Middleware para restringir acceso solo a la IP 187.155.101.200
+// Middleware para restringir acceso solo a la IP pública 187.155.101.200 (usando X-Forwarded-For)
 app.Use(async (context, next) =>
 {
     var allowedIp = "187.155.101.200";
-    var remoteIp = context.Connection.RemoteIpAddress?.ToString();
-    Console.WriteLine($"IP detectada: {remoteIp}"); // Log para depuración
-    if (remoteIp != allowedIp && remoteIp != $"::ffff:{allowedIp}")
+    var remoteIp = context.Request.Headers["X-Forwarded-For"].FirstOrDefault() 
+                   ?? context.Connection.RemoteIpAddress?.ToString();
+    Console.WriteLine($"IP detectada (X-Forwarded-For): {remoteIp}");
+    if (remoteIp != allowedIp)
     {
         context.Response.StatusCode = 403;
-        await context.Response.WriteAsync("Forbidden: Solo permitido desde la IP autorizada.");
+        await context.Response.WriteAsync("Forbidden: Solo permitido desde la IP pública de la escuela.");
         return;
     }
     await next();
