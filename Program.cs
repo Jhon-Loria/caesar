@@ -91,6 +91,20 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Middleware para restringir acceso solo a la IP 187.155.101.200
+app.Use(async (context, next) =>
+{
+    var allowedIp = "187.155.101.200";
+    var remoteIp = context.Connection.RemoteIpAddress?.ToString();
+    if (remoteIp != allowedIp)
+    {
+        context.Response.StatusCode = 403;
+        await context.Response.WriteAsync("Forbidden: Solo permitido desde la IP autorizada.");
+        return;
+    }
+    await next();
+});
+
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI(c =>
