@@ -10,18 +10,16 @@ namespace caesar.Controllers
     [Route("api/[controller]")]
     public class CaesarEncryptController : ControllerBase
     {
-        private readonly CaesarMessageRepository _repo;
         private readonly CaesarService _service;
-        public CaesarEncryptController(CaesarMessageRepository repo, CaesarService service)
+        public CaesarEncryptController(CaesarService service)
         {
-            _repo = repo;
             _service = service;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var messages = await _repo.GetAllAsync();
+            var messages = await _service.GetAllAsync();
             var encriptados = messages.Select(m => new {
                 m.Id,
                 EncryptedMessage = m.EncryptedMessage,
@@ -34,7 +32,7 @@ namespace caesar.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var msg = await _repo.GetByIdAsync(id);
+            var msg = await _service.GetByIdAsync(id);
             if (msg == null) return NotFound();
             var encriptado = new {
                 msg.Id,
@@ -48,33 +46,21 @@ namespace caesar.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CaesarMessage model)
         {
-            // Si el shift no se proporciona o es 0, genera uno aleatorio entre 1 y 25
-            if (model.Shift == 0)
-            {
-                var random = new Random();
-                model.Shift = random.Next(1, 26); // 1 a 25
-            }
-            model.EncryptedMessage = _service.Encrypt(model.OriginalMessage ?? "", model.Shift);
-            await _repo.AddAsync(model);
-            return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
+            var result = await _service.AddAsync(model);
+            return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CaesarMessage model)
         {
-            var existing = await _repo.GetByIdAsync(id);
-            if (existing == null) return NotFound();
-            existing.OriginalMessage = model.OriginalMessage;
-            existing.Shift = model.Shift;
-            existing.EncryptedMessage = _service.Encrypt(model.OriginalMessage ?? "", model.Shift);
-            await _repo.UpdateAsync(existing);
+            await _service.UpdateAsync(id, model);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _repo.DeleteAsync(id);
+            await _service.DeleteAsync(id);
             return NoContent();
         }
     }
