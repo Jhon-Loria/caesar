@@ -44,7 +44,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
 // Agregar DbContext para MySQL
 builder.Services.AddDbContext<caesar.data.CaesarDbContext>(options =>
